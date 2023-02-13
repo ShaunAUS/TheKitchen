@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
-class Ingredients(
+class Ingredient(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long?,
