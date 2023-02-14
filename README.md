@@ -11,13 +11,9 @@
 - Springboot
 - SpringDataJpa
 - Swagger
-- jjwt
 - Querydsl
 - mysql
-- SpringSecurity
 - Lombok
-- Redis
-- Docker
 
 STYLE
 - googleStyleGuide
