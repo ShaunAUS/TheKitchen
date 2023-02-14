@@ -1,7 +1,14 @@
 package com.example.kotlinPractice.domain.entity
 
+import com.example.kotlinPractice.domain.dto.ingredient.IngredientCreateDto
+import com.example.kotlinPractice.domain.dto.ingredient.IngredientInfoDto
+import com.example.kotlinPractice.utils.ModelMapper
+import com.group.libraryapp.utils.empty
+import com.group.libraryapp.utils.fail
 import jakarta.persistence.*
+import org.modelmapper.Converter
 import java.time.LocalDateTime
+import java.util.stream.Collectors
 
 @Entity
 class Ingredient(
@@ -23,7 +30,7 @@ class Ingredient(
         val expirationPeriod: LocalDateTime,
 
         @Column(nullable = false)
-        val quantity: Int,
+        var quantity: Int,
 
         val priority: Int?,
 
@@ -31,7 +38,7 @@ class Ingredient(
         @JoinColumn(name = "menu_id")
         val menu: Menu,
 
-        @ManyToOne
+        @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "refrigerator_id")
         val refrigerator: Refrigerator,
 
@@ -41,5 +48,23 @@ class Ingredient(
     @PrePersist
     fun prePersist9() {
         this.priority ?: 0
+    }
+
+    fun updateIngredientQuantity(useQuantity: Int) {
+        this.quantity -= useQuantity
+    }
+
+    companion object {
+        fun of(ingredientCreateDto: IngredientCreateDto?): Ingredient {
+            return ModelMapper.getMapper()
+                    .map(ingredientCreateDto, Ingredient::class.java)
+        }
+
+        fun INGREDIENT_LIST_CONVERTER(): Converter<List<Ingredient>, List<IngredientInfoDto>> =
+                Converter { context
+                    -> context.source?.stream()
+                        ?.map { ingredient -> IngredientInfoDto.of(ingredient) }
+                        ?.collect(Collectors.toList()) ?: empty()
+                }
     }
 }
