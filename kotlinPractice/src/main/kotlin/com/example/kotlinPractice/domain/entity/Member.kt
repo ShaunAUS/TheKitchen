@@ -41,12 +41,13 @@ class Member(
 
     fun update(updateDto: MemberUpdateDto) {
         ModelMapper.getMapper()
-                .map(updateDto, this)
+                .map(this, updateDto)
     }
 
     companion object{
         fun of(memberCreateDto: MemberCreateDto): Member {
-            TODO("Not yet implemented")
+            return ModelMapper.getMapper()
+                    .map(memberCreateDto, Member::class.java)
         }
     }
 

@@ -4,6 +4,7 @@ import com.example.kotlinPractice.domain.dto.ingredient.IngredientCreateDto.Comp
 import com.example.kotlinPractice.domain.dto.refrigerator.RefrigeratorCreateDto
 import com.example.kotlinPractice.utils.ModelMapper
 import jakarta.persistence.*
+import lombok.Setter
 
 //냉장고는 여러개가 될수 있다.
 @Entity
@@ -16,22 +17,25 @@ class Refrigerator(
 
         @ManyToOne
         @JoinColumn(name = "kitchen_id")
-        val kitchen: Kitchen,
+        var kitchen: Kitchen,
 
-        @OneToMany(mappedBy = "refrigerator", cascade = [CascadeType.ALL], orphanRemoval = true)
+        @OneToMany(mappedBy = "refrigerator", orphanRemoval = true)
         val ingredients: List<Ingredient>,
 
         ) {
+    fun updateKitchen(kitchen: Kitchen) {
+        this.kitchen = kitchen
+    }
+
+    fun PutInKitchen(kitchen: Kitchen): Refrigerator {
+        this.kitchen = kitchen
+        return this
+    }
 
     companion object {
         fun of(refrigeratorCreateDto: RefrigeratorCreateDto): Refrigerator {
              return ModelMapper.getMapper()
-                    .typeMap(RefrigeratorCreateDto::class.java, Refrigerator::class.java)
-                    .addMappings { mapper ->
-                        mapper.using(INGREDIENTDTO_LIST_CONVERTER())
-                                .map(RefrigeratorCreateDto::ingredients, Refrigerator::ingredients)
-                    }
-                     .map(refrigeratorCreateDto)
+                    .map(refrigeratorCreateDto, Refrigerator::class.java)
         }
     }
 
