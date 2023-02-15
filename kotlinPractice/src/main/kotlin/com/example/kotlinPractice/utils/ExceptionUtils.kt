@@ -24,7 +24,3 @@ fun <T, ID> CrudRepository<T, ID>.findByIdOrThrow(id:ID):T{
     return this.findByIdOrNull(id)?: fail()
 }
 
-
-fun getModelMapper():ModelMapper{
-    return ModelMapper()
-}
