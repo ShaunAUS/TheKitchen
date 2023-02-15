@@ -1,6 +1,7 @@
 package com.example.kotlinPractice.service.Impl
 
 import com.example.kotlinPractice.domain.dto.member.MemberCreateDto
+import com.example.kotlinPractice.domain.dto.member.MemberInfoDto
 import com.example.kotlinPractice.domain.dto.member.MemberWithPrepInfoDto
 import com.example.kotlinPractice.domain.dto.member.MemberUpdateDto
 import com.example.kotlinPractice.domain.dto.prep.PrepCreateDto
@@ -25,15 +26,36 @@ class MemberServiceImpl(
         private val prepRepository: PrepRepository,
 
         ) : MemberService {
-    override fun register(memberCreateDto: MemberCreateDto): MemberWithPrepInfoDto {
+    override fun register(memberCreateDto: MemberCreateDto): MemberInfoDto {
         val member = Member.of(memberCreateDto)
+        //TODO need to add kitchen
         memberRepository.save(member)
-        return MemberWithPrepInfoDto.of(member)
+        return MemberInfoDto.of(member)
     }
 
-    override fun getMember(memberId: Long): MemberWithPrepInfoDto {
-        return MemberWithPrepInfoDto.of(getMemberOrThrow(memberId))
+    override fun getMember(memberId: Long): MemberInfoDto {
+        return MemberInfoDto.of(getMemberOrThrow(memberId))
     }
+
+    override fun getMembers(pageable: Pageable): Page<MemberInfoDto> {
+        return memberRepository.findAll(pageable)
+                .map { member -> MemberInfoDto.of(member) }
+    }
+
+    @Transactional
+    override fun updateMember(targetMemberId: Long, updateDto: MemberUpdateDto): MemberInfoDto {
+        val targetMember = getMemberOrThrow(targetMemberId)
+
+        targetMember.update(updateDto)
+
+        return MemberInfoDto.of(targetMember)
+
+    }
+
+    override fun removeMember(targetMemberId: Long) {
+        memberRepository.deleteById(targetMemberId)
+    }
+
 
     //다른 맴버에게 주는 형식
     override fun makePrep(targetMemberId: Long, prepCreateDtoList: List<PrepCreateDto>): MemberWithPrepInfoDto {
@@ -59,28 +81,8 @@ class MemberServiceImpl(
     }
 
     //TODO need querydsl
-    override fun getMyPrep(memberId: Long) : MemberWithPrepInfoDto{
+    override fun getMyPrep(memberId: Long): MemberWithPrepInfoDto {
         return MemberWithPrepInfoDto.of(getMemberWithPreps(memberId))
-    }
-
-
-    override fun getMembers(pageable: Pageable): Page<MemberWithPrepInfoDto> {
-        return memberRepository.findAll(pageable)
-                .map { member -> MemberWithPrepInfoDto.of(member) }
-    }
-
-    @Transactional
-    override fun updateMember(memberId: Long, updateDto: MemberUpdateDto): MemberWithPrepInfoDto {
-        val targetMember = getMemberOrThrow(memberId)
-
-        targetMember.update(updateDto)
-
-        return MemberWithPrepInfoDto.of(targetMember)
-
-    }
-
-    override fun removeMember(memberNo: Long) {
-        memberRepository.deleteById(memberNo)
     }
 
     private fun getMemberOrThrow(memberId: Long): Member {

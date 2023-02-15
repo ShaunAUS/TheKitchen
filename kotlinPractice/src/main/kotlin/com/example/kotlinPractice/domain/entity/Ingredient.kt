@@ -4,7 +4,6 @@ import com.example.kotlinPractice.domain.dto.ingredient.IngredientCreateDto
 import com.example.kotlinPractice.domain.dto.ingredient.IngredientInfoDto
 import com.example.kotlinPractice.utils.ModelMapper
 import com.group.libraryapp.utils.empty
-import com.group.libraryapp.utils.fail
 import jakarta.persistence.*
 import org.modelmapper.Converter
 import java.time.LocalDateTime
@@ -40,7 +39,7 @@ class Ingredient(
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "refrigerator_id")
-        val refrigerator: Refrigerator,
+        var refrigerator: Refrigerator,
 
 
         ) {
@@ -52,6 +51,11 @@ class Ingredient(
 
     fun updateIngredientQuantity(useQuantity: Int) {
         this.quantity -= useQuantity
+    }
+
+    fun PutInRefrigerator(refrigerator: Refrigerator): Ingredient {
+        this.refrigerator = refrigerator
+        return this
     }
 
     companion object {

@@ -5,7 +5,7 @@ import lombok.Builder
 
 data class RefrigeratorCreateDto(
 
+        val kitchenId: Long,
         val name: String,
-        val ingredients : List<IngredientCreateDto>
 ) {
 }

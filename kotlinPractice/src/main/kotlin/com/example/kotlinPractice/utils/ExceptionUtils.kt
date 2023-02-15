@@ -12,11 +12,11 @@ fun fail(): Nothing {
 }
 
 fun empty(): Nothing {
-    throw NoSuchElementException()
+    throw NoSuchElementException("No value present")
 }
 
 fun notEnough() : Nothing{
-    throw IllegalStateException("재료가 부족합니다")
+    throw IllegalStateException("Not enough ingredient")
 }
 
 
