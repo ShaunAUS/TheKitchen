@@ -1,8 +1,10 @@
 package com.example.kotlinPractice.server.controller
 
 import com.example.kotlinPractice.domain.dto.member.MemberCreateDto
-import com.example.kotlinPractice.domain.dto.member.MemberInfoDto
+import com.example.kotlinPractice.domain.dto.member.MemberWithPrepInfoDto
 import com.example.kotlinPractice.domain.dto.member.MemberUpdateDto
+import com.example.kotlinPractice.domain.dto.prep.PrepCreateDto
+import com.example.kotlinPractice.domain.dto.prep.PrepInfoDto
 import com.example.kotlinPractice.service.MemberService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -28,7 +30,7 @@ class MemberController(
     @GetMapping("")
     fun registerMember(
             @RequestBody memberCreateDto: MemberCreateDto,
-    ): MemberInfoDto {
+    ): MemberWithPrepInfoDto {
 
         return memberService.register(memberCreateDto);
     }
@@ -37,30 +39,53 @@ class MemberController(
     @PostMapping("/all")
     fun getMembers(
             @PageableDefault(sort = ["member_id"], direction = Sort.Direction.DESC, size = 10) pageable: Pageable,
-    ): Page<MemberInfoDto> {
+    ): Page<MemberWithPrepInfoDto> {
         return memberService.getMembers(pageable);
 
     }
 
-    @GetMapping("/{memberNo}")
+    @GetMapping("/{memberId}")
     fun getMember(
-            @PathVariable memberNo: Long,
-    ): MemberInfoDto {
-        return memberService.getMember(memberNo)
+            @PathVariable memberId: Long,
+    ): MemberWithPrepInfoDto {
+        return memberService.getMember(memberId)
     }
 
-    @PatchMapping("/{memberNo}")
+    @PatchMapping("/{memberId}")
     fun updateMember(
-            @PathVariable memberNo: Long,
+            @PathVariable memberId: Long,
             @RequestBody updateDto: MemberUpdateDto,
-    ): MemberInfoDto {
-        return memberService.updateMember(memberNo, updateDto)
+    ): MemberWithPrepInfoDto {
+        return memberService.updateMember(memberId, updateDto)
     }
 
-    @DeleteMapping("/{memberNo}")
+    @DeleteMapping("/{memberId}")
     fun removeMember(
-            @PathVariable memberNo: Long,
+            @PathVariable memberId: Long,
     ): Unit {
-        return memberService.removeMember(memberNo)
+        return memberService.removeMember(memberId)
+    }
+
+    //다른 멤버에게  프렙리스트를 주는 형식
+    @PostMapping("/{targetMemberId}/prep")
+    fun makePrep(
+            @PathVariable targetMemberId: Long,
+            @RequestBody prepCreateDtoList: List<PrepCreateDto>
+    ) : MemberWithPrepInfoDto{
+        return memberService.makePrep(targetMemberId,prepCreateDtoList)
+    }
+
+    @PatchMapping("/{prepId}")
+    fun finishPrep(
+            @PathVariable prepId: Long
+    ) : PrepInfoDto{
+        return memberService.updatePrepStatus(prepId)
+    }
+
+    @GetMapping("/{memberId}/prep")
+    fun checkMyPrep(
+            @PathVariable memberId: Long
+    ) : MemberWithPrepInfoDto{
+        memberService.getMyPrep(memberId)
     }
 }

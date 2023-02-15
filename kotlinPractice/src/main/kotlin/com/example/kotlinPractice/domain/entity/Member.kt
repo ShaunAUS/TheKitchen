@@ -4,8 +4,9 @@ import com.example.kotlinPractice.domain.dto.member.MemberCreateDto
 import com.example.kotlinPractice.domain.dto.member.MemberUpdateDto
 import com.example.kotlinPractice.domain.enums.LevelType
 import com.example.kotlinPractice.domain.enums.SectionType
-import com.group.libraryapp.utils.getModelMapper
+import com.example.kotlinPractice.utils.ModelMapper
 import jakarta.persistence.*
+
 
 @Entity
 class Member(
@@ -19,15 +20,19 @@ class Member(
         @Column(nullable = false)
         val section: SectionType,
 
-        val experience: Int?,
+        @Column(nullable = false)
+        val experience: Int,
 
         @ManyToOne
         @JoinColumn(name = "kitchen_id")
         val kitchen: Kitchen,
 
+        @OneToMany(mappedBy = "member",  orphanRemoval = true)
+        val preps: List<Prep>,
+
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long?,
+        var id: Long?,
 ) {
     @PrePersist
     fun prePersist() {
@@ -35,7 +40,8 @@ class Member(
     }
 
     fun update(updateDto: MemberUpdateDto) {
-        getModelMapper().map(updateDto, this)
+        ModelMapper.getMapper()
+                .map(updateDto, this)
     }
 
     companion object{
