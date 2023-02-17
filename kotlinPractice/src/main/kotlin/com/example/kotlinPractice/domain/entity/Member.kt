@@ -6,6 +6,8 @@ import com.example.kotlinPractice.domain.enums.LevelType
 import com.example.kotlinPractice.domain.enums.SectionType
 import com.example.kotlinPractice.utils.ModelMapper
 import jakarta.persistence.*
+import org.modelmapper.TypeMap
+import kotlin.reflect.KProperty1
 
 
 @Entity
@@ -15,19 +17,19 @@ class Member(
         val name: String,
 
         @Column(nullable = false)
-        val level: LevelType,
+        var level: Int,
 
         @Column(nullable = false)
-        val section: SectionType,
+        var section: Int,
 
         @Column(nullable = false)
         val experience: Int,
 
         @ManyToOne
         @JoinColumn(name = "kitchen_id")
-        val kitchen: Kitchen,
+        var kitchen: Kitchen,
 
-        @OneToMany(mappedBy = "member",  orphanRemoval = true)
+        @OneToMany(mappedBy = "member", orphanRemoval = true)
         val preps: List<Prep>,
 
         @Id
@@ -44,12 +46,34 @@ class Member(
                 .map(this, updateDto)
     }
 
-    companion object{
+    fun setupKitchen(kitchen: Kitchen) {
+        this.kitchen = kitchen
+    }
+
+    fun convertLevel(level: Int) {
+        this.level = level
+    }
+    fun convertSection(section: Int) {
+        this.section = section
+    }
+
+    //TODO converter section, level
+    companion object {
         fun of(memberCreateDto: MemberCreateDto): Member {
             return ModelMapper.getMapper()
-                    .map(memberCreateDto, Member::class.java)
+                    .typeMap(MemberCreateDto::class.java, Member::class.java)
+                    .addMappings { mapper ->
+                        mapper.using(LevelType.LEVELTYPE_TO_INT_CONVERTER())
+                                .map(MemberCreateDto::level, Member::convertLevel)   //TODO need to fix
+                        mapper.using(SectionType.SECTIONTYPE_TO_INT_CONVERTER())
+                                .map(MemberCreateDto::section, Member::convertSection)
+                    }
+                    .map(memberCreateDto)
+
+
         }
     }
 
 
 }
+

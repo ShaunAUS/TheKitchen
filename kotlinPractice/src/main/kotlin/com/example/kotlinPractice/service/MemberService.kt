@@ -12,14 +12,14 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
 
 interface MemberService {
-    fun register(memberCreateDto: MemberCreateDto): MemberInfoDto
+    fun register(memberCreateDto: MemberCreateDto, kitchenId: Long): MemberInfoDto
     fun getMembers(pageable: Pageable): Page<MemberInfoDto>
-    fun updateMember(targetMemberId: Long,updateDto: MemberUpdateDto): MemberInfoDto
+    fun updateMember(targetMemberId: Long, updateDto: MemberUpdateDto): MemberInfoDto
     fun removeMember(targetMemberId: Long)
     fun getMember(targetMemberId: Long): MemberInfoDto
     fun makePrep(targetMemberId: Long, prepCreateDtoList: List<PrepCreateDto>): MemberWithPrepInfoDto
     fun updatePrepStatus(prepId: Long): PrepInfoDto
-    fun getMyPrep(memberId: Long) : MemberWithPrepInfoDto
+    fun getMyPrep(memberId: Long): MemberWithPrepInfoDto
 
     fun getMemberWithPreps(memberId: Long): Member
 }

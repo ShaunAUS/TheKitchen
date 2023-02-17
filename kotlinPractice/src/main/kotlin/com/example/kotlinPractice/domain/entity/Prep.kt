@@ -20,7 +20,7 @@ class Prep(
         val executionDate: LocalDateTime,
 
         @Column(nullable = false)
-        var executionStatus: ExecutionType,
+        var executionStatus: Int,
 
         @Column(nullable = false)
         val priority: Int,
@@ -36,7 +36,7 @@ class Prep(
     }
 
     fun updatePrepStatus() {
-        this.executionStatus = ExecutionType.DONE
+        this.executionStatus = ExecutionType.DONE.number
     }
 
     //Todo ExcutionType Convert

@@ -30,7 +30,7 @@ class RefrigeratorServiceImpl(
 
     override fun registerRefrigerators(refrigeratorCreateDto: RefrigeratorCreateDto): RefrigeratorInfoDto {
         val kitchen = findKitchenOrThrow(refrigeratorCreateDto.kitchenId)
-        val refrigerator = Refrigerator.of(refrigeratorCreateDto).PutInKitchen(kitchen)
+        val refrigerator = Refrigerator.of(refrigeratorCreateDto).setUpKitchen(kitchen)
 
         return RefrigeratorInfoDto.of(refrigeratorRepository.save(refrigerator))
     }

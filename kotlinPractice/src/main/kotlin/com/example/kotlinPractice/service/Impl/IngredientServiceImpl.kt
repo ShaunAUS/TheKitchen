@@ -1,7 +1,6 @@
 package com.example.kotlinPractice.service.Impl
 
 import com.example.kotlinPractice.domain.dto.ingredient.AddIngredientDto
-import com.example.kotlinPractice.domain.dto.ingredient.IngredientUseDto
 import com.example.kotlinPractice.domain.dto.ingredient.UseIngredientDto
 import com.example.kotlinPractice.domain.dto.refrigerator.RefrigeratorInfoDto
 import com.example.kotlinPractice.domain.entity.Ingredient
@@ -37,9 +36,10 @@ class IngredientServiceImpl(
 
         for (useIngredient in useIngredientDto.ingredientUseDtoList) {
             val ingredient = ingredientRepository.findByNameAndRefrigeratorId(useIngredient.name, refrigeratorId) ?: empty()
+
             ingredient.updateIngredientQuantity(useIngredient.quantity)
 
-            noticeNotEnoughtIngredient(ingredient.quantity)
+            noticeIfNotEnoughtIngredient(ingredient.quantity)
         }
 
         return RefrigeratorInfoDto.of(refrigerator)
@@ -53,8 +53,8 @@ class IngredientServiceImpl(
         val refrigerator = findRefrigeratorOrThrow(addIngredientDto.refrigeratorId)
 
         addIngredientDto.ingredientCreateDtoList.stream()
-                .map { ingredient ->
-                    ingredientRepository.save(Ingredient.of(ingredient).PutInRefrigerator(refrigerator)) }
+                .map { ingredientDto ->
+                    ingredientRepository.save(Ingredient.of(ingredientDto).setUpRefrigerator(refrigerator)) }
 
         return RefrigeratorInfoDto.of(refrigerator)
 
@@ -67,7 +67,7 @@ class IngredientServiceImpl(
     private fun findRefrigeratorOrThrow(refrigeratorId: Long): Refrigerator {
         return refrigeratorRepository.findByIdOrThrow(refrigeratorId)
     }
-    private fun noticeNotEnoughtIngredient(quantity: Int) {
+    private fun noticeIfNotEnoughtIngredient(quantity: Int) {
         if(quantity > 10){
             notEnough()
         }
