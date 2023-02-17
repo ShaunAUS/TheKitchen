@@ -11,14 +11,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/v1/member")
@@ -31,9 +24,9 @@ class MemberController(
     @GetMapping("")
     fun registerMember(
             @RequestBody memberCreateDto: MemberCreateDto,
+            @RequestParam("kitchenId") kitchenId: Long,
     ): MemberInfoDto {
-
-        return memberService.register(memberCreateDto);
+        return memberService.register(memberCreateDto,kitchenId);
     }
 
 
@@ -63,7 +56,7 @@ class MemberController(
     @DeleteMapping("/{targetMemberId}")
     fun removeMember(
             @PathVariable targetMemberId: Long,
-    ): Unit {
+    ) {
         return memberService.removeMember(targetMemberId)
     }
 

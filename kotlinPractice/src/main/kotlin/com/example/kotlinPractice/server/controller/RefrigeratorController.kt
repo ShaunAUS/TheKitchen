@@ -11,8 +11,6 @@ class RefrigeratorController(
         private val refrigeratorService: RefrigeratorService
 ) {
 
-
-
     @GetMapping("/{refrigeratorId}")
     fun getRefrigeratorStatus(
             @PathVariable refrigeratorId: Long,

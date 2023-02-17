@@ -4,7 +4,7 @@ import com.example.kotlinPractice.domain.enums.LevelType
 import com.example.kotlinPractice.domain.enums.SectionType
 import jakarta.persistence.Column
 
-data class MemberCreateDto(
+data class  MemberCreateDto(
         val name: String,
         val level: LevelType,
         val section: SectionType,

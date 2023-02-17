@@ -1,10 +1,8 @@
 package com.example.kotlinPractice.domain.entity
 
-import com.example.kotlinPractice.domain.dto.ingredient.IngredientCreateDto.Companion.INGREDIENTDTO_LIST_CONVERTER
 import com.example.kotlinPractice.domain.dto.refrigerator.RefrigeratorCreateDto
 import com.example.kotlinPractice.utils.ModelMapper
 import jakarta.persistence.*
-import lombok.Setter
 
 //냉장고는 여러개가 될수 있다.
 @Entity
@@ -27,7 +25,7 @@ class Refrigerator(
         this.kitchen = kitchen
     }
 
-    fun PutInKitchen(kitchen: Kitchen): Refrigerator {
+    fun setUpKitchen(kitchen: Kitchen): Refrigerator {
         this.kitchen = kitchen
         return this
     }

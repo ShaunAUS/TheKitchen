@@ -6,8 +6,10 @@ import com.example.kotlinPractice.domain.dto.member.MemberWithPrepInfoDto
 import com.example.kotlinPractice.domain.dto.member.MemberUpdateDto
 import com.example.kotlinPractice.domain.dto.prep.PrepCreateDto
 import com.example.kotlinPractice.domain.dto.prep.PrepInfoDto
+import com.example.kotlinPractice.domain.entity.Kitchen
 import com.example.kotlinPractice.domain.entity.Member
 import com.example.kotlinPractice.domain.entity.Prep
+import com.example.kotlinPractice.domain.repository.KitchenRepository
 import com.example.kotlinPractice.domain.repository.MemberRepository
 import com.example.kotlinPractice.domain.repository.PrepRepository
 import com.example.kotlinPractice.service.MemberService
@@ -24,14 +26,20 @@ class MemberServiceImpl(
 
         private val memberRepository: MemberRepository,
         private val prepRepository: PrepRepository,
+        private val kitchenRepository: KitchenRepository,
 
         ) : MemberService {
-    override fun register(memberCreateDto: MemberCreateDto): MemberInfoDto {
+    override fun register(memberCreateDto: MemberCreateDto, kitchenId: Long): MemberInfoDto {
+
         val member = Member.of(memberCreateDto)
-        //TODO need to add kitchen
+        member.setupKitchen(getKitchenById(kitchenId))
         memberRepository.save(member)
+
+
+
         return MemberInfoDto.of(member)
     }
+
 
     override fun getMember(memberId: Long): MemberInfoDto {
         return MemberInfoDto.of(getMemberOrThrow(memberId))
@@ -80,7 +88,7 @@ class MemberServiceImpl(
 
     }
 
-    //TODO need querydsl
+    //TODO  querydsl or only JPA?
     override fun getMyPrep(memberId: Long): MemberWithPrepInfoDto {
         return MemberWithPrepInfoDto.of(getMemberWithPreps(memberId))
     }
@@ -88,6 +96,9 @@ class MemberServiceImpl(
     private fun getMemberOrThrow(memberId: Long): Member {
         return memberRepository.findByIdOrThrow(memberId)
     }
+
+    private fun getKitchenById(kitchenId: Long): Kitchen =
+            kitchenRepository.findByIdOrThrow(kitchenId)
 
 
 }

@@ -53,7 +53,7 @@ class Ingredient(
         this.quantity -= useQuantity
     }
 
-    fun PutInRefrigerator(refrigerator: Refrigerator): Ingredient {
+    fun setUpRefrigerator(refrigerator: Refrigerator): Ingredient {
         this.refrigerator = refrigerator
         return this
     }
