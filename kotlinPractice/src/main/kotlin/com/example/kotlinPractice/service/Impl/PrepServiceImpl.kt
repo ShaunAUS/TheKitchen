@@ -45,9 +45,9 @@ class PrepServiceImpl(
     }
 
     //TODO  querydsl or only JPA?
-    override fun getMyPrep(memberId: Long): MemberWithPrepInfoDto {
+    /*override fun getMyPrep(memberId: Long): MemberWithPrepInfoDto {
         return MemberWithPrepInfoDto.of(getMemberWithPreps(memberId))
-    }
+    }*/
 
     private fun getMemberOrThrow(memberId: Long): Member {
         return memberRepository.findByIdOrThrow(memberId)

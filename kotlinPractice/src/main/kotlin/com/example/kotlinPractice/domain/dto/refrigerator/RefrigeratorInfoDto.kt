@@ -19,10 +19,10 @@ data class RefrigeratorInfoDto(
                 fun of(refrigerator: Refrigerator?): RefrigeratorInfoDto {
                          return ModelMapper.getMapper()
                                 .typeMap(Refrigerator::class.java, RefrigeratorInfoDto::class.java)
-                                .addMappings { mapper ->
+                                /*.addMappings { mapper ->
                                         mapper.using(INGREDIENT_LIST_CONVERTER())
                                                 .map(Refrigerator::ingredients, RefrigeratorInfoDto::ingredients)
-                                }
+                                }*/
                                 .map(refrigerator)
 
                 }
