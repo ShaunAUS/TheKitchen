@@ -29,7 +29,7 @@ class MemberServiceImpl(
         private val kitchenRepository: KitchenRepository,
 
         ) : MemberService {
-    override fun register(memberCreateDto: MemberCreateDto, kitchenId: Long): MemberInfoDto {
+    override fun createMember(memberCreateDto: MemberCreateDto, kitchenId: Long): MemberInfoDto {
 
         val member = Member.of(memberCreateDto)
         member.setupKitchen(getKitchenById(kitchenId))
@@ -64,34 +64,6 @@ class MemberServiceImpl(
         memberRepository.deleteById(targetMemberId)
     }
 
-
-    //다른 맴버에게 주는 형식
-    override fun makePrep(targetMemberId: Long, prepCreateDtoList: List<PrepCreateDto>): MemberWithPrepInfoDto {
-
-        val prepList = mutableListOf<Prep>()
-        val targetMember = getMemberOrThrow(targetMemberId)
-
-        for (prepCreateDto in prepCreateDtoList) {
-            prepList.add(Prep.of(prepCreateDto).updateExecutionMember(targetMember))
-        }
-        prepRepository.saveAll(prepList)
-
-        return MemberWithPrepInfoDto.of(targetMember)
-    }
-
-    @Transactional
-    override fun updatePrepStatus(prepId: Long): PrepInfoDto {
-        val prepById = prepRepository.findByIdOrThrow(prepId)
-        prepById.updatePrepStatus()
-
-        return PrepInfoDto.of(prepById)
-
-    }
-
-    //TODO  querydsl or only JPA?
-    override fun getMyPrep(memberId: Long): MemberWithPrepInfoDto {
-        return MemberWithPrepInfoDto.of(getMemberWithPreps(memberId))
-    }
 
     private fun getMemberOrThrow(memberId: Long): Member {
         return memberRepository.findByIdOrThrow(memberId)
