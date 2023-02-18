@@ -20,12 +20,12 @@ data class MemberInfoDto(
         fun of(member: Member):MemberInfoDto {
          return   ModelMapper.getMapper()
                     .typeMap(Member::class.java, MemberInfoDto::class.java)
-                    .addMappings { mapper ->
+                    /*.addMappings { mapper ->
                         mapper.using(LevelType.INT_TO_LEVELTYPE_CONVERTER())
                                 .map(Member::level,MemberInfoDto::level)
                         mapper.using(SectionType.INT_TO_SECTIONTYPE_CONVERTER())
                                 .map(Member::section,MemberInfoDto::section)
-                    }
+                    }*/
                     .map(member)
         }
 
