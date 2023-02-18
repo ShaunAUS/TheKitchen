@@ -2,10 +2,7 @@ package com.example.kotlinPractice.server.controller
 
 import com.example.kotlinPractice.domain.dto.member.MemberCreateDto
 import com.example.kotlinPractice.domain.dto.member.MemberInfoDto
-import com.example.kotlinPractice.domain.dto.member.MemberWithPrepInfoDto
 import com.example.kotlinPractice.domain.dto.member.MemberUpdateDto
-import com.example.kotlinPractice.domain.dto.prep.PrepCreateDto
-import com.example.kotlinPractice.domain.dto.prep.PrepInfoDto
 import com.example.kotlinPractice.service.MemberService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -22,11 +19,11 @@ class MemberController(
 
 
     @GetMapping("")
-    fun registerMember(
+    fun createMember(
             @RequestBody memberCreateDto: MemberCreateDto,
             @RequestParam("kitchenId") kitchenId: Long,
     ): MemberInfoDto {
-        return memberService.register(memberCreateDto,kitchenId);
+        return memberService.createMember(memberCreateDto,kitchenId);
     }
 
 
@@ -60,26 +57,5 @@ class MemberController(
         return memberService.removeMember(targetMemberId)
     }
 
-    //다른 멤버에게  프렙리스트를 주는 형식
-    @PostMapping("/{targetMemberId}/prep")
-    fun makePrep(
-            @PathVariable targetMemberId: Long,
-            @RequestBody prepCreateDtoList: List<PrepCreateDto>
-    ) : MemberWithPrepInfoDto{
-        return memberService.makePrep(targetMemberId,prepCreateDtoList)
-    }
 
-    @PatchMapping("/{prepId}")
-    fun finishPrep(
-            @PathVariable prepId: Long
-    ) : PrepInfoDto{
-        return memberService.updatePrepStatus(prepId)
-    }
-
-    @GetMapping("/{memberId}/prep")
-    fun checkMyPrep(
-            @PathVariable memberId: Long
-    ) : MemberWithPrepInfoDto{
-        return memberService.getMyPrep(memberId)
-    }
 }

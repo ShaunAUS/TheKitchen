@@ -22,7 +22,7 @@ class RefrigeratorController(
     fun createRefrigerator(
             @RequestBody refrigeratorCreateDto: RefrigeratorCreateDto
     ): RefrigeratorInfoDto {
-        return refrigeratorService.registerRefrigerators(refrigeratorCreateDto)
+        return refrigeratorService.createRefrigerators(refrigeratorCreateDto)
     }
 
     @DeleteMapping("/{refrigeratorId}")
