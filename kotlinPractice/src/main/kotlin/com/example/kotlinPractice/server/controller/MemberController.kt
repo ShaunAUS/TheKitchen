@@ -18,7 +18,7 @@ class MemberController(
 ) {
 
 
-    @GetMapping("")
+    @PostMapping("")
     fun createMember(
             @RequestBody memberCreateDto: MemberCreateDto,
             @RequestParam("kitchenId") kitchenId: Long,
@@ -27,7 +27,7 @@ class MemberController(
     }
 
 
-    @PostMapping("/all")
+    @GetMapping("/all")
     fun getMembers(
             @PageableDefault(sort = ["member_id"], direction = Sort.Direction.DESC, size = 10) pageable: Pageable,
     ): Page<MemberInfoDto> {
