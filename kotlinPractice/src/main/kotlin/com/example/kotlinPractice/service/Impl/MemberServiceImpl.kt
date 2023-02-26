@@ -35,8 +35,6 @@ class MemberServiceImpl(
         member.setupKitchen(getKitchenById(kitchenId))
         memberRepository.save(member)
 
-
-
         return MemberInfoDto.of(member)
     }
 
