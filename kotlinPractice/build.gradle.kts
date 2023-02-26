@@ -31,6 +31,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.modelmapper:modelmapper:2.4.4")
+	implementation("org.springframework.boot:spring-boot-starter-aop")
+
 
 	//Querydsl
 	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
