@@ -5,6 +5,7 @@ import com.example.kotlinPractice.domain.entity.Member
 import com.example.kotlinPractice.domain.enums.LevelType
 import com.example.kotlinPractice.domain.enums.SectionType
 import com.example.kotlinPractice.utils.ModelMapper
+import java.util.logging.Level
 
 
 data class MemberWithPrepInfoDto (
@@ -17,8 +18,13 @@ data class MemberWithPrepInfoDto (
     //TODO List<Prep>  -> List<PrepInfoDto>
     companion object {
         fun of(member: Member): MemberWithPrepInfoDto {
-            return ModelMapper.getMapper()
-                    .map(member, MemberWithPrepInfoDto::class.java)
+            return MemberWithPrepInfoDto(
+                    name = member.name,
+                    level = LevelType.intToType(member.level),
+                    section = SectionType.intToType(member.section),
+                    experience = member.experience,
+                    prepList = member.preps.map { p -> PrepInfoDto.of(p) }
+            )
         }
     }
 }

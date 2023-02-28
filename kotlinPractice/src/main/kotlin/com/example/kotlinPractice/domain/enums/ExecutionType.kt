@@ -3,7 +3,7 @@ package com.example.kotlinPractice.domain.enums
 import org.modelmapper.Converter
 
 enum class ExecutionType(
-        val section: String,
+        val execution: String,
         val number: Int,
 ) {
     BEFORE("시작전", 0),
@@ -11,16 +11,11 @@ enum class ExecutionType(
 
     companion object {
 
-        fun EXECUTIONTYPE_TO_INT_CONVERTER(): Converter<ExecutionType, Int> =
-                Converter{ context -> context.source.number }
-
-        fun INT_TO_EXECUTIONTYPE_CONVERTER() : Converter<Int,ExecutionType> =
-        Converter{
-            context -> context.source?.let {
-                values().first{
-                    it.number == context.source
-                }
+        fun typeToInt(executionType: ExecutionType) : Int{
+            return values().first {p -> p == executionType}.number
         }
+        fun intToType(int: Int) : ExecutionType{
+            return values().first {p -> p.number == int}
         }
     }
 

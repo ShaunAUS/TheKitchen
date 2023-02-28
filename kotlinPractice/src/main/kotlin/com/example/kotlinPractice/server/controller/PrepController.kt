@@ -16,9 +16,9 @@ class PrepController(
     @PostMapping("")
     fun makePrep(
             @RequestParam targetMemberId: Long,
-            @RequestBody prepCreateDtoList: List<PrepCreateDto>
+            @RequestBody prepCreateDtos: List<PrepCreateDto>
     ) : MemberWithPrepInfoDto {
-        return prepService.createPrepToTargetMember(targetMemberId,prepCreateDtoList)
+        return prepService.createPrepToTargetMember(targetMemberId,prepCreateDtos)
     }
 
     @PatchMapping("/{prepId}")
