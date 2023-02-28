@@ -12,7 +12,7 @@ import jakarta.persistence.*
 class Member(
 
         @Column(nullable = false)
-        val name: String,
+        var name: String,
 
         @Column(nullable = false)
         var level: Int,
@@ -21,7 +21,7 @@ class Member(
         var section: Int,
 
         @Column(nullable = false)
-        val experience: Int,
+        var experience: Int,
 
         @ManyToOne
         @JoinColumn(name = "kitchen_id")
@@ -34,14 +34,12 @@ class Member(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long?,
 ) {
-    @PrePersist
-    fun prePersist() {
-        this.experience ?: 0
-    }
 
     fun update(updateDto: MemberUpdateDto) {
-        ModelMapper.getMapper()
-                .map(this, updateDto)
+        this.name = updateDto.name
+        this.level = LevelType.typeToInt(updateDto.level)
+        this.section = SectionType.typeToInt(updateDto.section)
+        this.experience = updateDto.experience
     }
 
     fun setupKitchen(kitchen: Kitchen) {

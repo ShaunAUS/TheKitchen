@@ -7,5 +7,5 @@ data class MemberUpdateDto(
         val name: String,
         val level: LevelType,
         val section: SectionType,
-        val experience: Int?,
+        val experience: Int,
 )

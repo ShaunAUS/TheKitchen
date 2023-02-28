@@ -21,6 +21,6 @@ fun notEnough() : Nothing{
 
 
 fun <T, ID> CrudRepository<T, ID>.findByIdOrThrow(id:ID):T{
-    return this.findByIdOrNull(id)?: fail()
+    return this.findByIdOrNull(id)?: empty()
 }
 

@@ -29,7 +29,7 @@ class MemberController(
 
     @GetMapping("/all")
     fun getMembers(
-            @PageableDefault(sort = ["member_id"], direction = Sort.Direction.DESC, size = 10) pageable: Pageable,
+            @PageableDefault(size = 10, sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): Page<MemberInfoDto> {
         return memberService.getMembers(pageable);
 
