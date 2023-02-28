@@ -1,10 +1,8 @@
 package com.example.kotlinPractice.domain.enums
 
-import org.modelmapper.Converter
-
 enum class LevelType(
 
-        val position: String,
+        val level: String,
         val number: Int,
 ) {
 
@@ -14,21 +12,15 @@ enum class LevelType(
     SOUS_CHEF("스쉐프", 3),
     HEAD_CHEF("헤드쉐프", 4);
 
-
     companion object {
+        fun typeToInt(levelType: LevelType): Int {
+            return values().first { p -> p == levelType }.number
+        }
 
-        fun LEVELTYPE_TO_INT_CONVERTER(): Converter<LevelType, Int> =
-                Converter { context -> context.source?.number }
+        fun intToType(int: Int): LevelType {
+            return values().first { t -> t.number == int }
 
 
-        fun INT_TO_LEVELTYPE_CONVERTER(): Converter<Int, LevelType> =
-                Converter { context ->
-                    context.source?.let {
-                        values().first() {
-                            it.number == context.source
-                        }
-                    }
-                }
-
+        }
     }
 }

@@ -6,8 +6,6 @@ import com.example.kotlinPractice.domain.enums.LevelType
 import com.example.kotlinPractice.domain.enums.SectionType
 import com.example.kotlinPractice.utils.ModelMapper
 import jakarta.persistence.*
-import org.modelmapper.TypeMap
-import kotlin.reflect.KProperty1
 
 
 @Entity
@@ -50,27 +48,17 @@ class Member(
         this.kitchen = kitchen
     }
 
-    fun convertLevel(level: Int) {
-        this.level = level
-    }
-    fun convertSection(section: Int) {
-        this.section = section
-    }
-
-    //TODO converter section, level
     companion object {
-        fun of(memberCreateDto: MemberCreateDto): Member {
-            return ModelMapper.getMapper()
-                    .typeMap(MemberCreateDto::class.java, Member::class.java)
-                    .addMappings { mapper ->
-                        mapper.using(LevelType.LEVELTYPE_TO_INT_CONVERTER())
-                                .map(MemberCreateDto::level, Member::convertLevel)   //TODO need to fix
-                        mapper.using(SectionType.SECTIONTYPE_TO_INT_CONVERTER())
-                                .map(MemberCreateDto::section, Member::convertSection)
-                    }
-                    .map(memberCreateDto)
-
-
+        fun of(memberCreateDto: MemberCreateDto,kitchen: Kitchen): Member {
+            return Member(
+                    name = memberCreateDto.name,
+                    level = LevelType.typeToInt(memberCreateDto.level),
+                    section = SectionType.typeToInt(memberCreateDto.section),
+                    experience = memberCreateDto.experience,
+                    kitchen = kitchen,
+                    preps = emptyList(),//TODO  ModelMapper Converter는 빈값 안넣어줘도 됐는데.. 이방법은 어떻게 해결할까
+                    id = null,      //TODO 이렇게 null 세팅해줘야하는가..?
+                    )
         }
     }
 

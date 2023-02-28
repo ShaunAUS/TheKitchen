@@ -1,7 +1,5 @@
 package com.example.kotlinPractice.domain.enums
 
-import org.modelmapper.Converter
-
 enum class SectionType(
 
         val section: String,
@@ -13,18 +11,12 @@ enum class SectionType(
     PASTRY("디저트", 2);
 
     companion object {
-
-        fun SECTIONTYPE_TO_INT_CONVERTER(): Converter<SectionType, Int> =
-                Converter { context -> context.source?.number }
-
-
-        fun INT_TO_SECTIONTYPE_CONVERTER(): Converter<Int, SectionType> =
-                Converter{
-                    context -> context.source?.let {
-                        values().first{
-                            it.number == context.source
-                        }
-                }
-                }
+        fun typeToInt(section: SectionType): Int {
+            return values().first { p -> p == section }.number
+        }
+        fun intToType(int: Int): SectionType {
+            return values().first { t -> t.number == int }
+        }
     }
+
 }

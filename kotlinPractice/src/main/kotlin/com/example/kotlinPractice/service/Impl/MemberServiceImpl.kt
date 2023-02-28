@@ -30,12 +30,8 @@ class MemberServiceImpl(
 
         ) : MemberService {
     override fun createMember(memberCreateDto: MemberCreateDto, kitchenId: Long): MemberInfoDto {
-
-        val member = Member.of(memberCreateDto)
-        member.setupKitchen(getKitchenById(kitchenId))
-        memberRepository.save(member)
-
-        return MemberInfoDto.of(member)
+        val member = Member.of(memberCreateDto, getKitchenById(kitchenId))
+        return MemberInfoDto.of(memberRepository.save(member))
     }
 
 
@@ -67,8 +63,7 @@ class MemberServiceImpl(
         return memberRepository.findByIdOrThrow(memberId)
     }
 
-    private fun getKitchenById(kitchenId: Long): Kitchen =
-            kitchenRepository.findByIdOrThrow(kitchenId)
-
-
+    private fun getKitchenById(kitchenId: Long): Kitchen {
+        return kitchenRepository.findByIdOrThrow(kitchenId)
+    }
 }
