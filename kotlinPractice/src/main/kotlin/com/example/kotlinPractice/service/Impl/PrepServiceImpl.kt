@@ -22,13 +22,13 @@ class PrepServiceImpl(
 
 
     //다른 맴버에게 주는 형식
-    override fun createPrepToTargetMember(targetMemberId: Long, prepCreateDtoList: List<PrepCreateDto>): MemberWithPrepInfoDto {
+    override fun createPrepToTargetMember(targetMemberId: Long, prepCreateDtos: List<PrepCreateDto>): MemberWithPrepInfoDto {
 
         val prepList = mutableListOf<Prep>()
         val targetMember = getMemberOrThrow(targetMemberId)
 
-        for (prepCreateDto in prepCreateDtoList) {
-            prepList.add(Prep.of(prepCreateDto).updateExecutionMember(targetMember))
+        for (prepCreateDto in prepCreateDtos) {
+            prepList.add(Prep.of(prepCreateDto,targetMember))
         }
         prepRepository.saveAll(prepList)
 

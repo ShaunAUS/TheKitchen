@@ -13,9 +13,13 @@ data class PrepInfoDto(
 ) {
     //TODO need Converter
     companion object {
-        fun of(prepById: Prep): PrepInfoDto {
-            return ModelMapper.getMapper()
-                    .map(prepById, PrepInfoDto::class.java)
+        fun of(prep: Prep): PrepInfoDto {
+            return  PrepInfoDto(
+                    job = prep.job,
+                    priority = prep.priority,
+                    executionStatus = ExecutionType.intToType(prep.executionStatus),
+                    executionDate = prep.executionDate
+            )
         }
     }
 }
