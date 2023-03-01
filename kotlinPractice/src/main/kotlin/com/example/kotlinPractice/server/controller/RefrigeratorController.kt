@@ -20,9 +20,10 @@ class RefrigeratorController(
 
     @PostMapping("")
     fun createRefrigerator(
-            @RequestBody refrigeratorCreateDto: RefrigeratorCreateDto
+            @RequestBody refrigeratorCreateDto: RefrigeratorCreateDto,
+            @RequestParam("kitchenId") kitchenId: Long,
     ): RefrigeratorInfoDto {
-        return refrigeratorService.createRefrigerators(refrigeratorCreateDto)
+        return refrigeratorService.createRefrigerator(refrigeratorCreateDto,kitchenId)
     }
 
     @DeleteMapping("/{refrigeratorId}")

@@ -13,14 +13,8 @@ data class IngredientCreateDto(
         val expireDate: LocalDate,
         val expirationPeriod: Int,
         val quantity: Int,
-        val priority: Int,
 ){
     companion object{
-        fun INGREDIENTDTO_LIST_CONVERTER(): Converter<List<IngredientCreateDto>, List<Ingredient>> =
-                Converter { context
-                    -> context.source?.stream()
-                        ?.map { ingredientCreateDto -> Ingredient.of(ingredientCreateDto) }
-                        ?.collect(Collectors.toList()) ?: empty()
-                }
+
     }
 }

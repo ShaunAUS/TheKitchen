@@ -6,7 +6,6 @@ import java.time.LocalDate
 
 data class IngredientInfoDto(
 
-        val refrigeratorId: Long,
         val name:String,
         val buyDate: LocalDate,
         val expireDate: LocalDate,
@@ -15,9 +14,15 @@ data class IngredientInfoDto(
         val priority : Int
 ) {
     companion object {
-        fun of(ingredient: Ingredient?) : IngredientInfoDto{
-            return ModelMapper.getMapper()
-                    .map(ingredient, IngredientInfoDto::class.java)
+        fun of(ingredient: Ingredient) : IngredientInfoDto{
+            return IngredientInfoDto(
+                    name = ingredient.name,
+                    buyDate = ingredient.buyDate,
+                    expireDate = ingredient.expireDate,
+                    expirationPeriod = ingredient.expirationPeriod,
+                    quantity = ingredient.quantity,
+                    priority = ingredient.priority
+            )
         }
     }
 }

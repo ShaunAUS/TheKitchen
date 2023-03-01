@@ -8,6 +8,7 @@ import com.example.kotlinPractice.domain.entity.Kitchen
 import com.example.kotlinPractice.domain.entity.Refrigerator
 import com.example.kotlinPractice.domain.repository.IngredientRepository
 import com.example.kotlinPractice.domain.repository.KitchenRepository
+import com.example.kotlinPractice.domain.repository.MenuRepository
 import com.example.kotlinPractice.domain.repository.RefrigeratorRepository
 import com.example.kotlinPractice.service.IngredientService
 import com.group.libraryapp.utils.empty
@@ -24,6 +25,7 @@ class IngredientServiceImpl(
         private val refrigeratorRepository: RefrigeratorRepository,
         private val ingredientRepository: IngredientRepository,
         private val kitchenRepository: KitchenRepository,
+
 ) : IngredientService {
 
     //냉장고는 여러개일 수 있다.
@@ -33,28 +35,29 @@ class IngredientServiceImpl(
         val refrigeratorId = useIngredientDto.refrigeratorId
         val refrigerator = findRefrigeratorOrThrow(refrigeratorId)
 
-
         for (useIngredient in useIngredientDto.ingredientUseDtoList) {
             val ingredient = ingredientRepository.findByNameAndRefrigeratorId(useIngredient.name, refrigeratorId) ?: empty()
-
             ingredient.updateIngredientQuantity(useIngredient.quantity)
 
             noticeIfNotEnoughtIngredient(ingredient.quantity)
         }
-
         return RefrigeratorInfoDto.of(refrigerator)
-
+    }
+    private fun noticeIfNotEnoughtIngredient(quantity: Int) {
+        if(quantity > 10){
+            notEnough()
+        }
     }
 
-    @Transactional
     override fun addIngredient(addIngredientDto: AddIngredientDto): RefrigeratorInfoDto {
         //주방 ,냉장고 있나 확인
         findKitchenOrThrow(addIngredientDto.kitchenId)
         val refrigerator = findRefrigeratorOrThrow(addIngredientDto.refrigeratorId)
 
-        addIngredientDto.ingredientCreateDtoList.stream()
-                .map { ingredientDto ->
-                    ingredientRepository.save(Ingredient.of(ingredientDto).setUpRefrigerator(refrigerator)) }
+        //TODO 냉장고에 있는 재료 추가시 수량만 더하기
+        addIngredientDto.ingredientCreateDtoList.
+        forEach { ingredientDto -> ingredientRepository.save(Ingredient.of(ingredientDto,refrigerator)) }
+
 
         return RefrigeratorInfoDto.of(refrigerator)
 
@@ -67,10 +70,6 @@ class IngredientServiceImpl(
     private fun findRefrigeratorOrThrow(refrigeratorId: Long): Refrigerator {
         return refrigeratorRepository.findByIdOrThrow(refrigeratorId)
     }
-    private fun noticeIfNotEnoughtIngredient(quantity: Int) {
-        if(quantity > 10){
-            notEnough()
-        }
-    }
+
 
 }
