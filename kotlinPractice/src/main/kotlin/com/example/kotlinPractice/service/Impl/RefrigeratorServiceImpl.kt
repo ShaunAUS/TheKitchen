@@ -28,10 +28,9 @@ class RefrigeratorServiceImpl(
         refrigeratorRepository.deleteById(refrigeratorId)
     }
 
-    override fun createRefrigerators(refrigeratorCreateDto: RefrigeratorCreateDto): RefrigeratorInfoDto {
-        val kitchen = findKitchenOrThrow(refrigeratorCreateDto.kitchenId)
-        val refrigerator = Refrigerator.of(refrigeratorCreateDto).setUpKitchen(kitchen)
-
+    override fun createRefrigerator(refrigeratorCreateDto: RefrigeratorCreateDto,kitchenId:Long): RefrigeratorInfoDto {
+        val kitchen = findKitchenOrThrow(kitchenId)
+        val refrigerator = Refrigerator.of(refrigeratorCreateDto,kitchen)
         return RefrigeratorInfoDto.of(refrigeratorRepository.save(refrigerator))
     }
 

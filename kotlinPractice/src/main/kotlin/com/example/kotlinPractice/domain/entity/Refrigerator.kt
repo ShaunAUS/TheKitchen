@@ -25,15 +25,15 @@ class Refrigerator(
         this.kitchen = kitchen
     }
 
-    fun setUpKitchen(kitchen: Kitchen): Refrigerator {
-        this.kitchen = kitchen
-        return this
-    }
 
     companion object {
-        fun of(refrigeratorCreateDto: RefrigeratorCreateDto): Refrigerator {
-             return ModelMapper.getMapper()
-                    .map(refrigeratorCreateDto, Refrigerator::class.java)
+        fun of(refrigeratorCreateDto: RefrigeratorCreateDto,kitchen: Kitchen): Refrigerator {
+             return Refrigerator(
+                    id = null,
+                    name = refrigeratorCreateDto.name,
+                    kitchen = kitchen,
+                    ingredients = emptyList()
+             )
         }
     }
 

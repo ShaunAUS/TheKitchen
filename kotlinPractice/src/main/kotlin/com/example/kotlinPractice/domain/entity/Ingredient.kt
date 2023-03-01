@@ -6,6 +6,7 @@ import com.example.kotlinPractice.utils.ModelMapper
 import com.group.libraryapp.utils.empty
 import jakarta.persistence.*
 import org.modelmapper.Converter
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.stream.Collectors
 
@@ -19,23 +20,20 @@ class Ingredient(
         val name: String,
 
         @Column(nullable = false)
-        val buyDate: LocalDateTime,
+        val buyDate: LocalDate,
 
         @Column(nullable = false)
-        val expireDate: LocalDateTime,
+        val expireDate: LocalDate,
 
         //TODO 항상최신화
         @Column(nullable = false)
-        val expirationPeriod: LocalDateTime,
+        val expirationPeriod: Int,
 
         @Column(nullable = false)
         var quantity: Int,
 
-        val priority: Int?,
+        val priority: Int,
 
-        @ManyToOne
-        @JoinColumn(name = "menu_id")
-        val menu: Menu,
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "refrigerator_id")
@@ -44,31 +42,22 @@ class Ingredient(
 
         ) {
 
-    @PrePersist
-    fun prePersist9() {
-        this.priority ?: 0
-    }
-
     fun updateIngredientQuantity(useQuantity: Int) {
         this.quantity -= useQuantity
     }
 
-    fun setUpRefrigerator(refrigerator: Refrigerator): Ingredient {
-        this.refrigerator = refrigerator
-        return this
-    }
-
     companion object {
-        fun of(ingredientCreateDto: IngredientCreateDto?): Ingredient {
-            return ModelMapper.getMapper()
-                    .map(ingredientCreateDto, Ingredient::class.java)
+        fun of(ingredientCreateDto: IngredientCreateDto,refrigerator: Refrigerator): Ingredient {
+            return Ingredient(
+                    id = null,
+                    name = ingredientCreateDto.name,
+                    buyDate = ingredientCreateDto.buyDate,
+                    expireDate = ingredientCreateDto.expireDate,
+                    expirationPeriod = ingredientCreateDto.expirationPeriod,
+                    quantity = ingredientCreateDto.quantity,
+                    priority = 10,
+                    refrigerator = refrigerator
+            )
         }
-
-        fun INGREDIENT_LIST_CONVERTER(): Converter<List<Ingredient>, List<IngredientInfoDto>> =
-                Converter { context
-                    -> context.source?.stream()
-                        ?.map { ingredient -> IngredientInfoDto.of(ingredient) }
-                        ?.collect(Collectors.toList()) ?: empty()
-                }
     }
 }
