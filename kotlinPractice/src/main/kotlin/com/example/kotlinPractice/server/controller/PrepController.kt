@@ -28,11 +28,11 @@ class PrepController(
         return prepService.updatePrepStatus(prepId)
     }
 
-    /*@GetMapping("/prep")
+    @GetMapping("/my")
     fun checkMyPrep(
             @RequestParam targetMemberId: Long,
-    ) : MemberWithPrepInfoDto {
+    ) : List<PrepInfoDto> {
         return prepService.getMyPrep(targetMemberId)
-    }*/
+    }
 
 }
