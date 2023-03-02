@@ -15,7 +15,6 @@ data class MemberWithPrepInfoDto (
         val experience: Int?,
         val prepList: List<PrepInfoDto>
 ) {
-    //TODO List<Prep>  -> List<PrepInfoDto>
     companion object {
         fun of(member: Member): MemberWithPrepInfoDto {
             return MemberWithPrepInfoDto(

@@ -7,6 +7,7 @@ import com.example.kotlinPractice.domain.entity.Member
 import com.example.kotlinPractice.domain.entity.Prep
 import com.example.kotlinPractice.domain.repository.MemberRepository
 import com.example.kotlinPractice.domain.repository.PrepRepository
+import com.example.kotlinPractice.domain.repository.querydsl.PrepCustomRepository
 import com.example.kotlinPractice.service.PrepService
 import com.group.libraryapp.utils.findByIdOrThrow
 import lombok.extern.slf4j.Slf4j
@@ -17,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional
 @Slf4j
 class PrepServiceImpl(
         private val prepRepository: PrepRepository,
-        private val memberRepository: MemberRepository
+        private val memberRepository: MemberRepository,
+        private val prepCustomRepository: PrepCustomRepository
 ) : PrepService {
 
 
@@ -44,10 +46,14 @@ class PrepServiceImpl(
 
     }
 
-    //TODO  querydsl or only JPA?
-    /*override fun getMyPrep(memberId: Long): MemberWithPrepInfoDto {
-        return MemberWithPrepInfoDto.of(getMemberWithPreps(memberId))
-    }*/
+    //TODO CustomRepository에서 가공해서 가져오는 방식
+    override fun getMyPrep(targetMemberId:  Long): List<PrepInfoDto> {
+         return prepCustomRepository.findByMemberId(targetMemberId)
+                 .map { p -> PrepInfoDto.of(p)}
+                 .toList();
+
+    }
+
 
     private fun getMemberOrThrow(memberId: Long): Member {
         return memberRepository.findByIdOrThrow(memberId)
