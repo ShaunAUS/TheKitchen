@@ -46,6 +46,10 @@ class Ingredient(
         this.quantity -= useQuantity
     }
 
+    fun addIngredientQuantity(quantity: Int) {
+        this.quantity += quantity
+    }
+
     companion object {
         fun of(ingredientCreateDto: IngredientCreateDto,refrigerator: Refrigerator): Ingredient {
             return Ingredient(
