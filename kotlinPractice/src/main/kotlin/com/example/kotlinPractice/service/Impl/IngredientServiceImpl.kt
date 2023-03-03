@@ -42,11 +42,15 @@ class IngredientServiceImpl(
 
             noticeIfNotEnoughtIngredient(ingredient.quantity)
         }
+
+        upToDateIngredientDate(refrigerator)
+
+
         return RefrigeratorInfoDto.of(refrigerator)
     }
 
     private fun noticeIfNotEnoughtIngredient(quantity: Int) {
-        if (quantity > 10) {
+        if (quantity < 10) {
             notEnough()
         }
     }
@@ -73,12 +77,8 @@ class IngredientServiceImpl(
         return kitchenRepository.findByIdOrThrow(kitchenId)
     }
 
-    //.sorted(Comparator.comparing(Ingredient::expirationPeriod))
-
     private fun findRefrigeratorOrThrow(refrigeratorId: Long): Refrigerator {
-        val refrigerator = refrigeratorRepository.findByIdOrThrow(refrigeratorId)
-        upToDateIngredientDate(refrigerator)
-        return refrigerator
+        return refrigeratorRepository.findByIdOrThrow(refrigeratorId)
     }
 
     @Transactional

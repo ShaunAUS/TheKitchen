@@ -3,6 +3,7 @@ package com.example.kotlinPractice.domain.entity
 import com.example.kotlinPractice.domain.dto.ingredient.IngredientCreateDto
 import jakarta.persistence.*
 import org.modelmapper.Converter
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.stream.Collectors

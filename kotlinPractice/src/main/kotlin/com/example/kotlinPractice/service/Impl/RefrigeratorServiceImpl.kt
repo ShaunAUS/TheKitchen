@@ -39,17 +39,6 @@ class RefrigeratorServiceImpl(
     }
 
     private fun findRefrigeratorOrThrow(refrigeratorId: Long): Refrigerator {
-        val refrigerator = refrigeratorRepository.findByIdOrThrow(refrigeratorId)
-        upToDateIngredientDate(refrigerator)
-        return refrigerator
-    }
-
-    @Transactional
-    private fun upToDateIngredientDate(refrigerator: Refrigerator) {
-        refrigerator.ingredients
-                .stream()
-                .forEach { ingredient ->
-                    ingredient.updateExpirationPeriod(Duration.between(ingredient.buyDate.atStartOfDay(), ingredient.expireDate.atStartOfDay()).toDays())
-                }
+        return refrigeratorRepository.findByIdOrThrow(refrigeratorId)
     }
 }
