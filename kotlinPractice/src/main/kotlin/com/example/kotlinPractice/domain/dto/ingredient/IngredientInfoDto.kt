@@ -11,7 +11,6 @@ data class IngredientInfoDto(
         val expireDate: LocalDate,
         val expirationPeriod : Int,
         val quantity : Int,
-        val priority : Int
 ) {
     companion object {
         fun of(ingredient: Ingredient) : IngredientInfoDto{
@@ -21,7 +20,6 @@ data class IngredientInfoDto(
                     expireDate = ingredient.expireDate,
                     expirationPeriod = ingredient.expirationPeriod,
                     quantity = ingredient.quantity,
-                    priority = ingredient.priority
             )
         }
     }

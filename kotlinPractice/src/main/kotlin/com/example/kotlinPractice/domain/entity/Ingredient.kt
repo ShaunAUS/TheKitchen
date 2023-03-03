@@ -1,9 +1,6 @@
 package com.example.kotlinPractice.domain.entity
 
 import com.example.kotlinPractice.domain.dto.ingredient.IngredientCreateDto
-import com.example.kotlinPractice.domain.dto.ingredient.IngredientInfoDto
-import com.example.kotlinPractice.utils.ModelMapper
-import com.group.libraryapp.utils.empty
 import jakarta.persistence.*
 import org.modelmapper.Converter
 import java.time.LocalDate
@@ -27,13 +24,10 @@ class Ingredient(
 
         //TODO 항상최신화
         @Column(nullable = false)
-        val expirationPeriod: Int,
+        var expirationPeriod: Int,
 
         @Column(nullable = false)
         var quantity: Int,
-
-        val priority: Int,
-
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "refrigerator_id")
@@ -50,6 +44,11 @@ class Ingredient(
         this.quantity += quantity
     }
 
+    fun updateExpirationPeriod(toDays: Long) {
+        this.expirationPeriod = toDays.toInt()
+    }
+
+
     companion object {
         fun of(ingredientCreateDto: IngredientCreateDto,refrigerator: Refrigerator): Ingredient {
             return Ingredient(
@@ -59,7 +58,6 @@ class Ingredient(
                     expireDate = ingredientCreateDto.expireDate,
                     expirationPeriod = ingredientCreateDto.expirationPeriod,
                     quantity = ingredientCreateDto.quantity,
-                    priority = 10,
                     refrigerator = refrigerator
             )
         }

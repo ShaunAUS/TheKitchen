@@ -16,6 +16,7 @@ import com.group.libraryapp.utils.notEnough
 import lombok.extern.slf4j.Slf4j
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
 
 @Service
 @Slf4j
@@ -56,6 +57,7 @@ class IngredientServiceImpl(
         findKitchenOrThrow(addIngredientDto.kitchenId)
         val refrigerator = findRefrigeratorOrThrow(addIngredientDto.refrigeratorId)
 
+        //TODO 중간에 들어온 재료 날짜다르게 로직 필요 , 지금은 그냥 더하기
         addIngredientDto.ingredientCreateDtoList
                 .forEach { ingredientDto ->
                     ingredientRepository.findByName(ingredientDto.name)?.addIngredientQuantity(ingredientDto.quantity)
@@ -71,8 +73,21 @@ class IngredientServiceImpl(
         return kitchenRepository.findByIdOrThrow(kitchenId)
     }
 
+    //.sorted(Comparator.comparing(Ingredient::expirationPeriod))
+
     private fun findRefrigeratorOrThrow(refrigeratorId: Long): Refrigerator {
-        return refrigeratorRepository.findByIdOrThrow(refrigeratorId)
+        val refrigerator = refrigeratorRepository.findByIdOrThrow(refrigeratorId)
+        upToDateIngredientDate(refrigerator)
+        return refrigerator
+    }
+
+    @Transactional
+    private fun upToDateIngredientDate(refrigerator: Refrigerator) {
+        refrigerator.ingredients
+                .stream()
+                .forEach { ingredient ->
+                    ingredient.updateExpirationPeriod(Duration.between(ingredient.buyDate.atStartOfDay(), ingredient.expireDate.atStartOfDay()).toDays())
+                }
     }
 
 

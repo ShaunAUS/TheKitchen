@@ -11,6 +11,7 @@ import com.group.libraryapp.utils.findByIdOrThrow
 import lombok.extern.slf4j.Slf4j
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
 
 @Service
 @Slf4j
@@ -19,7 +20,6 @@ class RefrigeratorServiceImpl(
         private val kitchenRepository: KitchenRepository,
 ) : RefrigeratorService {
 
-    @Transactional(readOnly = true)
     override fun getRefrigerator(refrigeratorId: Long): RefrigeratorInfoDto {
         return RefrigeratorInfoDto.of(findRefrigeratorOrThrow(refrigeratorId))
     }
@@ -39,6 +39,17 @@ class RefrigeratorServiceImpl(
     }
 
     private fun findRefrigeratorOrThrow(refrigeratorId: Long): Refrigerator {
-        return refrigeratorRepository.findByIdOrThrow(refrigeratorId)
+        val refrigerator = refrigeratorRepository.findByIdOrThrow(refrigeratorId)
+        upToDateIngredientDate(refrigerator)
+        return refrigerator
+    }
+
+    @Transactional
+    private fun upToDateIngredientDate(refrigerator: Refrigerator) {
+        refrigerator.ingredients
+                .stream()
+                .forEach { ingredient ->
+                    ingredient.updateExpirationPeriod(Duration.between(ingredient.buyDate.atStartOfDay(), ingredient.expireDate.atStartOfDay()).toDays())
+                }
     }
 }
