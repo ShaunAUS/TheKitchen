@@ -26,6 +26,13 @@ class RefrigeratorController(
         return refrigeratorService.createRefrigerator(refrigeratorCreateDto,kitchenId)
     }
 
+    @PatchMapping("/uptodate")
+    fun updateRefrigerator(
+            @RequestParam("refrigeratorId") refrigeratorId: Long,
+    ): RefrigeratorInfoDto {
+        return refrigeratorService.updateRefrigerator(refrigeratorId)
+    }
+
     @DeleteMapping("/{refrigeratorId}")
     fun removeRefrigerator(
             @PathVariable refrigeratorId: Long,

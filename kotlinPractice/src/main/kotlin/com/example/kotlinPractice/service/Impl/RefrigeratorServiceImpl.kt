@@ -28,10 +28,15 @@ class RefrigeratorServiceImpl(
         refrigeratorRepository.deleteById(refrigeratorId)
     }
 
-    override fun createRefrigerator(refrigeratorCreateDto: RefrigeratorCreateDto,kitchenId:Long): RefrigeratorInfoDto {
-        val kitchen = findKitchenOrThrow(kitchenId)
-        val refrigerator = Refrigerator.of(refrigeratorCreateDto,kitchen)
+    override fun createRefrigerator(refrigeratorCreateDto: RefrigeratorCreateDto, kitchenId: Long): RefrigeratorInfoDto {
+        val refrigerator = Refrigerator.of(refrigeratorCreateDto, findKitchenOrThrow(kitchenId))
         return RefrigeratorInfoDto.of(refrigeratorRepository.save(refrigerator))
+    }
+
+    override fun updateRefrigerator(refrigeratorId: Long): RefrigeratorInfoDto {
+        val refrigerator = findRefrigeratorOrThrow(refrigeratorId)
+        upToDateIngredientDate(refrigerator)
+        return RefrigeratorInfoDto.of(refrigerator)
     }
 
     private fun findKitchenOrThrow(kitchenId: Long): Kitchen {
@@ -40,5 +45,14 @@ class RefrigeratorServiceImpl(
 
     private fun findRefrigeratorOrThrow(refrigeratorId: Long): Refrigerator {
         return refrigeratorRepository.findByIdOrThrow(refrigeratorId)
+    }
+
+    @Transactional
+    private fun upToDateIngredientDate(refrigerator: Refrigerator) {
+        refrigerator.ingredients
+                .stream()
+                .forEach { ingredient ->
+                    ingredient.updateExpirationPeriod(Duration.between(ingredient.buyDate.atStartOfDay(), ingredient.expireDate.atStartOfDay()).toDays())
+                }
     }
 }
