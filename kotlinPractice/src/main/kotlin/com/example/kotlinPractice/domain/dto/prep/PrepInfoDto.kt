@@ -16,7 +16,7 @@ data class PrepInfoDto(
                     job = prep.job,
                     priority = prep.priority,
                     executionType = ExecutionType.intToType(prep.executionStatus),
-                    executionDate = prep.executionDate
+                    executionDate = prep.deadLine
             )
         }
     }
