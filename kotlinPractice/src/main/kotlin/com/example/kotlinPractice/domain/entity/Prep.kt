@@ -2,10 +2,8 @@ package com.example.kotlinPractice.domain.entity
 
 import com.example.kotlinPractice.domain.dto.prep.PrepCreateDto
 import com.example.kotlinPractice.domain.enums.ExecutionType
-import com.fasterxml.jackson.annotation.JsonFormat
 import jakarta.persistence.*
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 @Entity
 class Prep(
@@ -15,7 +13,7 @@ class Prep(
         val job: String,
 
         @Column(nullable = false)
-        val executionDate: LocalDate,
+        val deadLine: LocalDate,
 
         @Column(nullable = false)
         var executionStatus: Int,
@@ -44,7 +42,7 @@ class Prep(
             return Prep(
                     id = null,
                     job = prepCreateDto.job,
-                    executionDate = prepCreateDto.executionDate,
+                    deadLine = prepCreateDto.deadLine,
                     executionStatus = ExecutionType.typeToInt(prepCreateDto.executionType),
                     priority = prepCreateDto.priority,
                     member = targetMember
