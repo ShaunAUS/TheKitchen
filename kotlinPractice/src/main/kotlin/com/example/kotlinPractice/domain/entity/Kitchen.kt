@@ -16,15 +16,15 @@ class Kitchen(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long?,
 ) {
-        companion object {
-            fun of(createKitchenDto: KitchenCreateDto): Kitchen {
-                return Kitchen(
-                        name = createKitchenDto.name,
-                        location = createKitchenDto.location,
-                        id = null
-                )
-            }
-
-            }
+    companion object {
+        fun of(createKitchenDto: KitchenCreateDto): Kitchen {
+            return Kitchen(
+                    name = createKitchenDto.name,
+                    location = createKitchenDto.location,
+                    id = null
+            )
         }
+
+    }
+
 }

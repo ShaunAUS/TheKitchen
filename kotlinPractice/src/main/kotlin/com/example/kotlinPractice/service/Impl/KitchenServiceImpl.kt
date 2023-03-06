@@ -6,7 +6,9 @@ import com.example.kotlinPractice.domain.dto.refrigerator.RefrigeratorInfoDto
 import com.example.kotlinPractice.domain.entity.Kitchen
 import com.example.kotlinPractice.domain.repository.KitchenRepository
 import com.example.kotlinPractice.service.KitchenService
+import org.springframework.stereotype.Service
 
+@Service
 class KitchenServiceImpl(
         private val kitchenRepository: KitchenRepository,
 ) : KitchenService {
