@@ -5,5 +5,5 @@ import com.example.kotlinPractice.domain.dto.kitchen.KitchenInfoDto
 import com.example.kotlinPractice.domain.dto.refrigerator.RefrigeratorInfoDto
 
 interface KitchenService {
-    fun createKitchen(createKitchenDto: KitchenCreateDto): KitchenInfoDto
+    fun createKitchen(kitchenCreateDto: KitchenCreateDto): KitchenInfoDto
 }
