@@ -4,5 +4,5 @@ data class AddIngredientDto (
 
         val kitchenId :Long,
         val refrigeratorId: Long,
-        val ingredientCreateDtoList: List<IngredientCreateDto>
+        val ingredientCreateDtos: List<IngredientCreateDto>
 )
