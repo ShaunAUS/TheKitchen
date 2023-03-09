@@ -81,7 +81,7 @@ class PrepServiceImplTest @Autowired constructor(
     }
 
     @Test
-    @Transactional // TODO  메인코드에서는 안필요한데 테스트 코드에서 필요한 이유는???
+    @Transactional()
     fun createPrepToTargetMember() {
 
         //given
@@ -114,7 +114,7 @@ class PrepServiceImplTest @Autowired constructor(
     }
 
     @Test
-    @Transactional // TODO  메인코드에서는 안필요한데 테스트 코드에서 필요한 이유는???
+    @Transactional
     fun getMyPrep() {
 
         //given
