@@ -28,19 +28,18 @@ class IngredientServiceImpl(
 
         ) : IngredientService {
 
-    //냉장고는 여러개일 수 있다.
     @Transactional
     override fun useIngredient(useIngredientDto: UseIngredientDto): RefrigeratorInfoDto {
 
         val refrigeratorId = useIngredientDto.refrigeratorId
         val refrigerator = findRefrigeratorOrThrow(refrigeratorId)
 
-        for (useIngredient in useIngredientDto.ingredientUseDtoList) {
+        for (useIngredient in useIngredientDto.ingredientUseDtos) {
             val ingredient = ingredientRepository.findByNameAndRefrigeratorId(useIngredient.name, refrigeratorId)
                     ?: empty()
             ingredient.updateIngredientQuantity(useIngredient.quantity)
 
-            noticeIfNotEnoughtIngredient(ingredient.quantity)
+            noticeIfNotEnoughtQuantity(ingredient.quantity)
         }
 
         upToDateIngredientDate(refrigerator)
@@ -49,8 +48,8 @@ class IngredientServiceImpl(
         return RefrigeratorInfoDto.of(refrigerator)
     }
 
-    private fun noticeIfNotEnoughtIngredient(quantity: Int) {
-        if (quantity < 10) {
+    private fun noticeIfNotEnoughtQuantity(quantity: Int) {
+        if (quantity < 2) {
             notEnough()
         }
     }
@@ -62,7 +61,7 @@ class IngredientServiceImpl(
         val refrigerator = findRefrigeratorOrThrow(addIngredientDto.refrigeratorId)
 
         //TODO 중간에 들어온 재료 날짜다르게 로직 필요 , 지금은 그냥 더하기
-        addIngredientDto.ingredientCreateDtoList
+        addIngredientDto.ingredientCreateDtos
                 .forEach { ingredientDto ->
                     ingredientRepository.findByName(ingredientDto.name)?.addIngredientQuantity(ingredientDto.quantity)
                             ?: ingredientRepository.save(Ingredient.of(ingredientDto, refrigerator))

@@ -21,10 +21,6 @@ class Refrigerator(
         val ingredients: List<Ingredient>,
 
         ) {
-    fun updateKitchen(kitchen: Kitchen) {
-        this.kitchen = kitchen
-    }
-
 
     companion object {
         fun of(refrigeratorCreateDto: RefrigeratorCreateDto,kitchen: Kitchen): Refrigerator {
