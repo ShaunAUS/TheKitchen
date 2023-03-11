@@ -13,20 +13,17 @@ import com.example.kotlinPractice.domain.repository.RefrigeratorRepository
 import com.example.kotlinPractice.service.IngredientService
 import com.example.kotlinPractice.service.KitchenService
 import com.example.kotlinPractice.service.RefrigeratorService
-import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.MethodOrderer
-import org.junit.jupiter.api.Order
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.Rollback
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS) // @AfterAll , @BeforeAll
 class IngredientServiceImplTest @Autowired constructor(
 
         val ingredientService: IngredientService,
@@ -54,7 +51,7 @@ class IngredientServiceImplTest @Autowired constructor(
         refrigeratorService.createRefrigerator(testRefrigerator, testKitchenId)
     }
 
-    @AfterEach
+    @AfterAll
     fun after() {
         ingredientRepository.deleteAll()
         refrigeratorRepository.deleteAll()
@@ -64,6 +61,7 @@ class IngredientServiceImplTest @Autowired constructor(
     @Test
     @Transactional
     @Order(1)
+    @Rollback(false)
     fun addIngredient() {
         //given
         val testKitchenId = kitchenRepository.findAll()[0].id!!
@@ -91,9 +89,6 @@ class IngredientServiceImplTest @Autowired constructor(
 
         //when
         ingredientService.addIngredient(addIngredientDto)
-        val name = ingredientRepository.findAll()[0].name
-        val name1 = ingredientRepository.findAll()[1].name
-
 
         val onion = ingredientRepository.findByName("양파")!!
         val carrot = ingredientRepository.findByName("당근")!!
@@ -110,9 +105,6 @@ class IngredientServiceImplTest @Autowired constructor(
     @Transactional
     @Order(2)
     fun useIngredient() {
-
-        //TODO Order(1) 에서 데이터가 이어지지 않음,,
-        val size = ingredientRepository.findAll().size
 
         //given
         val testKitchenId = kitchenRepository.findAll()[0].id!!
