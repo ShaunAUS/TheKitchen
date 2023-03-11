@@ -59,9 +59,7 @@ class IngredientServiceImplTest @Autowired constructor(
     }
 
     @Test
-    @Transactional
     @Order(1)
-    @Rollback(false)
     fun addIngredient() {
         //given
         val testKitchenId = kitchenRepository.findAll()[0].id!!
@@ -102,7 +100,6 @@ class IngredientServiceImplTest @Autowired constructor(
     }
 
     @Test
-    @Transactional
     @Order(2)
     fun useIngredient() {
 

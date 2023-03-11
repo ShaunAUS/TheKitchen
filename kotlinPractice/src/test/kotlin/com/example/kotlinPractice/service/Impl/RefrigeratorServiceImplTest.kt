@@ -36,7 +36,6 @@ class RefrigeratorServiceImplTest @Autowired constructor(
         val ingredientRepository: IngredientRepository
 ){
     @BeforeAll
-    @Transactional
     fun before(){
 
         val testKitchen = KitchenCreateDto(
