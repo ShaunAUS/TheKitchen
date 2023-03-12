@@ -7,7 +7,8 @@
 - 재고관리, 레스토랑 관리는 있지만 **주방**을 관리하는 앱은 없어서 필요성을 느낌
 
 사용된 기술
-
+- Kotlin
+- KotlinDSL
 - Springboot
 - SpringDataJpa
 - Swagger
