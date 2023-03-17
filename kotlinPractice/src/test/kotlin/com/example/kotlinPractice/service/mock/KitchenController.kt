@@ -1,7 +1,9 @@
 package com.example.kotlinPractice.service.mock
 
 import com.example.kotlinPractice.domain.dto.kitchen.KitchenCreateDto
+import com.example.kotlinPractice.domain.dto.kitchen.KitchenInfoDto
 import com.example.kotlinPractice.server.controller.KitchenController
+import com.example.kotlinPractice.service.Impl.KitchenServiceImpl
 import com.example.kotlinPractice.service.KitchenService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.aspectj.lang.annotation.Before
@@ -14,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.junit.jupiter.api.Assertions.*
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.boot.test.mock.mockito.MockBeans
 
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -21,8 +25,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
+
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc // 서블릿 컨테이너 모킹,
 class KitchenController @Autowired constructor(
         var mvc: MockMvc,
         val mapper : ObjectMapper
@@ -36,19 +41,17 @@ class KitchenController @Autowired constructor(
     @Test
     fun createKitchenTest(){
 
-        val kitchenInfo = mvc.perform(post("/v1/kitchen")
+         mvc.perform(post("/v1/kitchen")
                 .content(mapper.writeValueAsString(KitchenCreateDto(
                         name = "testKitchen",
                         location = "testLocation"
                 )))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk)
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(mapper.writeValueAsString(KitchenCreateDto(
+                 .andExpect(content().contentType("application/json"))
+                .andExpect(content().json(mapper.writeValueAsString(KitchenInfoDto(
                         name = "testKitchen",
                         location = "testLocation"
                 ))))
-
-
     }
 }
