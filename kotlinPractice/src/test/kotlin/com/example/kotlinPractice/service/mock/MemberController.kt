@@ -3,7 +3,7 @@ package com.example.kotlinPractice.service.mock
 import com.example.kotlinPractice.domain.dto.kitchen.KitchenCreateDto
 import com.example.kotlinPractice.domain.dto.kitchen.KitchenInfoDto
 import com.example.kotlinPractice.domain.dto.member.MemberCreateDto
-import com.example.kotlinPractice.domain.dto.member.MemberInfoDto
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import com.example.kotlinPractice.domain.dto.member.MemberUpdateDto
 import com.example.kotlinPractice.domain.enums.LevelType
 import com.example.kotlinPractice.domain.enums.SectionType
@@ -162,8 +162,7 @@ class MemberController @Autowired constructor(
     @Test
     @Order(5)
     fun deleteMember() {
-        mvc.perform(MockMvcRequestBuilders.patch("/v1/member/{targetMemberId}", 1)
-                .contentType(MediaType.APPLICATION_JSON))  //TODO pathvariable 만 있을떄는??
+        mvc.perform(patch("/v1/member/{targetMemberId}", 1))
                 .andExpect(status().isOk)
     }
 

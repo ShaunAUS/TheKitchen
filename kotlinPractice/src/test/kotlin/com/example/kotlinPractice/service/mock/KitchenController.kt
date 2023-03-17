@@ -3,22 +3,13 @@ package com.example.kotlinPractice.service.mock
 import com.example.kotlinPractice.domain.dto.kitchen.KitchenCreateDto
 import com.example.kotlinPractice.domain.dto.kitchen.KitchenInfoDto
 import com.example.kotlinPractice.server.controller.KitchenController
-import com.example.kotlinPractice.service.Impl.KitchenServiceImpl
-import com.example.kotlinPractice.service.KitchenService
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.aspectj.lang.annotation.Before
-
-import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.junit.jupiter.api.Assertions.*
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.boot.test.mock.mockito.MockBeans
-
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
