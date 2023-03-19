@@ -58,8 +58,7 @@ class PrepController @Autowired constructor(
     @Order(1)
     fun createPrep() {
 
-        val prepCreateDtos = mutableListOf<PrepCreateDto>()
-        prepCreateDtos.addAll(listOf(
+        val prepCreateDtos = listOf(
                 PrepCreateDto(
                         job = "testJob",
                         priority = 1,
@@ -72,7 +71,7 @@ class PrepController @Autowired constructor(
                         executionType = ExecutionType.BEFORE,
                         deadLine = LocalDate.now()
                 )
-        ))
+        )
         mvc.perform(post("/v1/prep")
                 .param("targetMemberId", "1")
                 .content(mapper.writeValueAsString(prepCreateDtos))
