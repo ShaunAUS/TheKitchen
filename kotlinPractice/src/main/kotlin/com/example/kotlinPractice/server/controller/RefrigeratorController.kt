@@ -10,14 +10,6 @@ import org.springframework.web.bind.annotation.*
 class RefrigeratorController(
         private val refrigeratorService: RefrigeratorService
 ) {
-
-    @GetMapping("/{refrigeratorId}")
-    fun getRefrigeratorStatus(
-            @PathVariable refrigeratorId: Long,
-    ): RefrigeratorInfoDto {
-        return refrigeratorService.getRefrigerator(refrigeratorId)
-    }
-
     @PostMapping("")
     fun createRefrigerator(
             @RequestBody refrigeratorCreateDto: RefrigeratorCreateDto,
@@ -31,6 +23,13 @@ class RefrigeratorController(
             @RequestParam("refrigeratorId") refrigeratorId: Long,
     ): RefrigeratorInfoDto {
         return refrigeratorService.updateRefrigerator(refrigeratorId)
+    }
+
+    @GetMapping("/{refrigeratorId}")
+    fun getRefrigeratorStatus(
+            @PathVariable refrigeratorId: Long,
+    ): RefrigeratorInfoDto {
+        return refrigeratorService.getRefrigerator(refrigeratorId)
     }
 
     @DeleteMapping("/{refrigeratorId}")
